@@ -43,7 +43,7 @@
 I2C_HandleTypeDef hi2c1;
 
 /* USER CODE BEGIN PV */
-
+uint8_t oled_addr=0xFF;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -56,7 +56,45 @@ static void MX_I2C1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void OLED_WriteCmd(uint8_t cmd)
+{
+    HAL_I2C_Mem_Write(&hi2c1, oled_addr << 1, 0x00, 1, &cmd, 1, 100);
+}
 
+void OLED_WriteData(uint8_t *data, uint16_t len)
+{
+    HAL_I2C_Mem_Write(&hi2c1, oled_addr << 1, 0x40, 1, data, len, 100);
+}
+void OLED_Init(void)
+{
+    HAL_Delay(100);
+    OLED_WriteCmd(0xAE);
+    OLED_WriteCmd(0xD5);
+    OLED_WriteCmd(0x80);
+    OLED_WriteCmd(0xA8);
+    OLED_WriteCmd(0x3F);
+    OLED_WriteCmd(0xD3);
+    OLED_WriteCmd(0x00);
+    OLED_WriteCmd(0x40);
+    OLED_WriteCmd(0x8D);
+    OLED_WriteCmd(0x14);
+    OLED_WriteCmd(0x20);
+    OLED_WriteCmd(0x00);
+    OLED_WriteCmd(0xA1);
+    OLED_WriteCmd(0xC8);
+    OLED_WriteCmd(0xDA);
+    OLED_WriteCmd(0x12);
+    OLED_WriteCmd(0x81);
+    OLED_WriteCmd(0xCF);
+    OLED_WriteCmd(0xD9);
+    OLED_WriteCmd(0xF1);
+    OLED_WriteCmd(0xDB);
+    OLED_WriteCmd(0x40);
+    OLED_WriteCmd(0xA4);
+    OLED_WriteCmd(0xA6);
+    OLED_WriteCmd(0x2E);
+    OLED_WriteCmd(0xAF);
+}
 /* USER CODE END 0 */
 
 /**
@@ -90,7 +128,7 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-uint8_t oled_addr=0;
+
 
 for(uint8_t addr=0x08; addr<0x77;addr++){
 	if (HAL_I2C_IsDeviceReady(&hi2c1,(addr<<1),1,100)==HAL_OK){
@@ -98,6 +136,10 @@ for(uint8_t addr=0x08; addr<0x77;addr++){
 		break;
 	}
 }
+if (oled_addr != 0) {
+    OLED_Init();
+}
+
 
   /* USER CODE END 2 */
 
