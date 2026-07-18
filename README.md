@@ -10,10 +10,10 @@ LED 閃爍:
 按鍵中斷:
 [https://youtu.be/mmpadcEgBps]
 
-I2C 掃描器:
+I2C 掃描器(掃到則慢速閃爍，未掃到則快速閃爍):
 [https://youtu.be/VB3gYqTwDcg]
-(掃到則慢速閃爍，未掃到則快速閃爍)
 
-OLED顯示Hello STM32:
+
+OLED顯示Hello STM32(I2C + 5x7 字型):
 [https://youtu.be/_IZaFVZSwjc]
-(I2C + 5x7 字型)
+
