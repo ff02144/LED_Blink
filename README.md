@@ -3,7 +3,8 @@
 - [v2.0-blink](https://github.com/ff02144/LED_Blink/releases/tag/v2.0) - 按鍵中斷
 - [v3.0-blink](https://github.com/ff02144/LED_Blink/releases/tag/v3.0)-I2C 掃描器
 - [v3.1-blink](https://github.com/ff02144/LED_Blink/releases/tag/v3.1)-OLED顯示Hello STM32
-## 展示影片:
+- [v3.2-blink](https://github.com/ff02144/LED_Blink/releases/tag/v3.2)-手持式照度計：OLED + ADC 光敏讀取
+## 展示影片: 
 LED 閃爍:
 [https://youtu.be/KM8ID3KEyd8]
 
@@ -17,3 +18,5 @@ I2C 掃描器(掃到則慢速閃爍，未掃到則快速閃爍):
 OLED顯示Hello STM32(I2C + 5x7 字型):
 [https://youtu.be/_IZaFVZSwjc]
 
+手持式照度計：OLED + ADC 光敏讀取:
+[https://youtu.be/Dku-pLG0sW4]
