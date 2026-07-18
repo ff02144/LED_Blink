@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -40,6 +40,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef hadc1;
+
 I2C_HandleTypeDef hi2c1;
 
 /* USER CODE BEGIN PV */
@@ -50,7 +52,7 @@ uint8_t oled_addr=0x3C;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
-
+static void MX_ADC1_Init(void);
 /* USER CODE BEGIN PFP */
 void OLED_Clear(void);
 /* USER CODE END PFP */
@@ -246,7 +248,15 @@ void OLED_WriteString(char *str)
         str++;
     }
 }
-
+uint32_t ADC_Read(void)
+{
+	 HAL_ADC_Start(&hadc1);   // ★ 啟動 ADC（即使連續模式，也要先啟動一次）
+	    if (HAL_ADC_PollForConversion(&hadc1, 100) == HAL_OK)  // 等待轉換完成
+	    {
+	        return HAL_ADC_GetValue(&hadc1);
+	    }
+	    return 0;
+}
 /* USER CODE END 0 */
 
 /**
@@ -279,6 +289,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_I2C1_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   if (oled_addr != 0xFF)
   {
@@ -294,7 +305,7 @@ int main(void)
         HAL_Delay(200);
         HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
 
-        // ★ 清除後：閃 3 下（代表清除完成）
+        // ★ 清除後閃3下代表清除完成
         for (int i=0; i<3; i++)
         {
             HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
@@ -304,10 +315,9 @@ int main(void)
         }
 
 
-      OLED_Clear();          // 清除螢幕（全暗）
+      OLED_Clear();          //清除螢幕全暗
 
-      // ★ 顯示文字（需要字型表和 OLED_WriteString 函式）
-      OLED_WriteString("Hello STM32");
+
   }
   /* USER CODE END 2 */
 
@@ -316,22 +326,34 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	/*    if (oled_addr != 0)
-	    {
 
-	        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-	        HAL_Delay(500);//找到慢慢閃
-	    }
-	    else
-	    {
+	  while (1)
+	  {
+	      HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);  // LED 亮
+	      uint32_t adc_val = ADC_Read();
+	      HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);    // LED 滅
 
-	        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-	        HAL_Delay(100);//沒找到快快閃
-	    }*/
+	      char buf[20];
+	      float voltage = adc_val * 3.3f / 4096.0f;
+	      sprintf(buf, "L:%4d  %.2fV", (int)adc_val, voltage);
+	      OLED_Clear();
+	      OLED_WriteString(buf);
+	      HAL_Delay(500);
+	  }
 
-	      HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-	      HAL_Delay(10000);
+	  // 讀取 ADC 數值（0~4095）
+	    uint32_t adc_val = ADC_Read();
 
+	    // 將數值轉為字串
+	    char buf[20];
+	    sprintf(buf, "Light: %4d", (int)adc_val);   // 或 %lu + (unsigned long)
+
+	    // 顯示在 OLED（先清屏再寫入）
+	    OLED_Clear();
+	    OLED_WriteString(buf);
+
+	    // 延遲 500ms
+	    HAL_Delay(500);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -345,6 +367,7 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -374,6 +397,59 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
+  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV2;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief ADC1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC1_Init(void)
+{
+
+  /* USER CODE BEGIN ADC1_Init 0 */
+
+  /* USER CODE END ADC1_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC1_Init 1 */
+
+  /* USER CODE END ADC1_Init 1 */
+
+  /** Common config
+  */
+  hadc1.Instance = ADC1;
+  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc1.Init.ContinuousConvMode = ENABLE;
+  hadc1.Init.DiscontinuousConvMode = DISABLE;
+  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc1.Init.NbrOfConversion = 1;
+  if (HAL_ADC_Init(&hadc1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_0;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC1_Init 2 */
+
+  /* USER CODE END ADC1_Init 2 */
+
 }
 
 /**
@@ -437,16 +513,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PA0 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
