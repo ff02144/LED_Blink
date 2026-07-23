@@ -4,6 +4,7 @@
 - [v3.0-blink](https://github.com/ff02144/LED_Blink/releases/tag/v3.0)-I2C 掃描器
 - [v3.1-blink](https://github.com/ff02144/LED_Blink/releases/tag/v3.1)-OLED顯示Hello STM32
 - [v3.2-blink](https://github.com/ff02144/LED_Blink/releases/tag/v3.2)-手持式照度計：OLED + ADC 光敏讀取
+- [v3.3-blink](https://github.com/ff02144/stm32-from-blink-to-sensor-hub/releases/tag/v3.3-blink)-STM32 光敏感測器 OLED 顯示 + UART 電腦監控
 ## 展示影片: 
 LED 閃爍:
 [https://youtu.be/KM8ID3KEyd8]
@@ -20,3 +21,6 @@ OLED顯示Hello STM32(I2C + 5x7 字型):
 
 手持式照度計：OLED + ADC 光敏讀取:
 [https://youtu.be/Dku-pLG0sW4]
+
+STM32 光敏感測器 OLED 顯示 + UART 電腦監控 Demo
+[https://youtu.be/JIIunCFIMEw]
