@@ -949,7 +949,7 @@ int main(void)
  80008ee:	f000 f985 	bl	8000bfc <MX_USART1_UART_Init>
   /* USER CODE BEGIN 2 */
   if (oled_addr != 0xFF)
- 80008f2:	4b57      	ldr	r3, [pc, #348]	@ (8000a50 <main+0x17c>)
+ 80008f2:	4b58      	ldr	r3, [pc, #352]	@ (8000a54 <main+0x180>)
  80008f4:	781b      	ldrb	r3, [r3, #0]
  80008f6:	2bff      	cmp	r3, #255	@ 0xff
  80008f8:	d03f      	beq.n	800097a <main+0xa6>
@@ -962,7 +962,7 @@ int main(void)
       HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
  80008fe:	2200      	movs	r2, #0
  8000900:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
- 8000904:	4853      	ldr	r0, [pc, #332]	@ (8000a54 <main+0x180>)
+ 8000904:	4854      	ldr	r0, [pc, #336]	@ (8000a58 <main+0x184>)
  8000906:	f001 faa1 	bl	8001e4c <HAL_GPIO_WritePin>
         HAL_Delay(200);
  800090a:	20c8      	movs	r0, #200	@ 0xc8
@@ -970,7 +970,7 @@ int main(void)
         HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
  8000910:	2201      	movs	r2, #1
  8000912:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
- 8000916:	484f      	ldr	r0, [pc, #316]	@ (8000a54 <main+0x180>)
+ 8000916:	4850      	ldr	r0, [pc, #320]	@ (8000a58 <main+0x184>)
  8000918:	f001 fa98 	bl	8001e4c <HAL_GPIO_WritePin>
         HAL_Delay(200);
  800091c:	20c8      	movs	r0, #200	@ 0xc8
@@ -978,7 +978,7 @@ int main(void)
         HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
  8000922:	2200      	movs	r2, #0
  8000924:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
- 8000928:	484a      	ldr	r0, [pc, #296]	@ (8000a54 <main+0x180>)
+ 8000928:	484b      	ldr	r0, [pc, #300]	@ (8000a58 <main+0x184>)
  800092a:	f001 fa8f 	bl	8001e4c <HAL_GPIO_WritePin>
         HAL_Delay(200);
  800092e:	20c8      	movs	r0, #200	@ 0xc8
@@ -986,7 +986,7 @@ int main(void)
         HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
  8000934:	2201      	movs	r2, #1
  8000936:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
- 800093a:	4846      	ldr	r0, [pc, #280]	@ (8000a54 <main+0x180>)
+ 800093a:	4847      	ldr	r0, [pc, #284]	@ (8000a58 <main+0x184>)
  800093c:	f001 fa86 	bl	8001e4c <HAL_GPIO_WritePin>
 
         // ★ 清除後閃3下代表清除完成
@@ -998,7 +998,7 @@ int main(void)
             HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
  8000946:	2200      	movs	r2, #0
  8000948:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
- 800094c:	4841      	ldr	r0, [pc, #260]	@ (8000a54 <main+0x180>)
+ 800094c:	4842      	ldr	r0, [pc, #264]	@ (8000a58 <main+0x184>)
  800094e:	f001 fa7d 	bl	8001e4c <HAL_GPIO_WritePin>
             HAL_Delay(200);
  8000952:	20c8      	movs	r0, #200	@ 0xc8
@@ -1006,7 +1006,7 @@ int main(void)
             HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
  8000958:	2201      	movs	r2, #1
  800095a:	f44f 5100 	mov.w	r1, #8192	@ 0x2000
- 800095e:	483d      	ldr	r0, [pc, #244]	@ (8000a54 <main+0x180>)
+ 800095e:	483e      	ldr	r0, [pc, #248]	@ (8000a58 <main+0x184>)
  8000960:	f001 fa74 	bl	8001e4c <HAL_GPIO_WritePin>
             HAL_Delay(200);
  8000964:	20c8      	movs	r0, #200	@ 0xc8
@@ -1035,7 +1035,7 @@ int main(void)
  8000980:	6d38      	ldr	r0, [r7, #80]	@ 0x50
  8000982:	f7ff fca1 	bl	80002c8 <__aeabi_ui2f>
  8000986:	4603      	mov	r3, r0
- 8000988:	4933      	ldr	r1, [pc, #204]	@ (8000a58 <main+0x184>)
+ 8000988:	4934      	ldr	r1, [pc, #208]	@ (8000a5c <main+0x188>)
  800098a:	4618      	mov	r0, r3
  800098c:	f7ff fcf4 	bl	8000378 <__aeabi_fmul>
  8000990:	4603      	mov	r3, r0
@@ -1049,10 +1049,10 @@ int main(void)
  80009a6:	f8a7 304e 	strh.w	r3, [r7, #78]	@ 0x4e
   char oled_buf[20];
 
-  sprintf(oled_buf,"L:%4d %d.%02dV",(int)adc_val,voltage_mV/1000,(voltage_mV%100)/10);
+  sprintf(oled_buf,"L:%4d %d.%02dV",(int)adc_val,voltage_mV/1000,(voltage_mV%1000)/10);
  80009aa:	6d39      	ldr	r1, [r7, #80]	@ 0x50
  80009ac:	f8b7 304e 	ldrh.w	r3, [r7, #78]	@ 0x4e
- 80009b0:	4a2a      	ldr	r2, [pc, #168]	@ (8000a5c <main+0x188>)
+ 80009b0:	4a2b      	ldr	r2, [pc, #172]	@ (8000a60 <main+0x18c>)
  80009b2:	fba2 2303 	umull	r2, r3, r2, r3
  80009b6:	099b      	lsrs	r3, r3, #6
  80009b8:	b29b      	uxth	r3, r3
@@ -1060,72 +1060,72 @@ int main(void)
  80009bc:	f8b7 304e 	ldrh.w	r3, [r7, #78]	@ 0x4e
  80009c0:	4a27      	ldr	r2, [pc, #156]	@ (8000a60 <main+0x18c>)
  80009c2:	fba2 0203 	umull	r0, r2, r2, r3
- 80009c6:	0952      	lsrs	r2, r2, #5
- 80009c8:	2064      	movs	r0, #100	@ 0x64
- 80009ca:	fb00 f202 	mul.w	r2, r0, r2
- 80009ce:	1a9b      	subs	r3, r3, r2
- 80009d0:	b29b      	uxth	r3, r3
- 80009d2:	4a24      	ldr	r2, [pc, #144]	@ (8000a64 <main+0x190>)
- 80009d4:	fba2 2303 	umull	r2, r3, r2, r3
- 80009d8:	08db      	lsrs	r3, r3, #3
- 80009da:	b29b      	uxth	r3, r3
- 80009dc:	f107 0038 	add.w	r0, r7, #56	@ 0x38
- 80009e0:	9300      	str	r3, [sp, #0]
- 80009e2:	4623      	mov	r3, r4
- 80009e4:	460a      	mov	r2, r1
- 80009e6:	4920      	ldr	r1, [pc, #128]	@ (8000a68 <main+0x194>)
- 80009e8:	f002 fe94 	bl	8003714 <siprintf>
+ 80009c6:	0992      	lsrs	r2, r2, #6
+ 80009c8:	f44f 707a 	mov.w	r0, #1000	@ 0x3e8
+ 80009cc:	fb00 f202 	mul.w	r2, r0, r2
+ 80009d0:	1a9b      	subs	r3, r3, r2
+ 80009d2:	b29b      	uxth	r3, r3
+ 80009d4:	4a23      	ldr	r2, [pc, #140]	@ (8000a64 <main+0x190>)
+ 80009d6:	fba2 2303 	umull	r2, r3, r2, r3
+ 80009da:	08db      	lsrs	r3, r3, #3
+ 80009dc:	b29b      	uxth	r3, r3
+ 80009de:	f107 0038 	add.w	r0, r7, #56	@ 0x38
+ 80009e2:	9300      	str	r3, [sp, #0]
+ 80009e4:	4623      	mov	r3, r4
+ 80009e6:	460a      	mov	r2, r1
+ 80009e8:	491f      	ldr	r1, [pc, #124]	@ (8000a68 <main+0x194>)
+ 80009ea:	f002 fe93 	bl	8003714 <siprintf>
 
 
   OLED_Clear();
- 80009ec:	f7ff fea6 	bl	800073c <OLED_Clear>
+ 80009ee:	f7ff fea5 	bl	800073c <OLED_Clear>
   OLED_WriteString(oled_buf);
- 80009f0:	f107 0338 	add.w	r3, r7, #56	@ 0x38
- 80009f4:	4618      	mov	r0, r3
- 80009f6:	f7ff fedd 	bl	80007b4 <OLED_WriteString>
+ 80009f2:	f107 0338 	add.w	r3, r7, #56	@ 0x38
+ 80009f6:	4618      	mov	r0, r3
+ 80009f8:	f7ff fedc 	bl	80007b4 <OLED_WriteString>
 
   char uart_buf[50];
   sprintf(uart_buf,"Light: %d,Voltage:%d.%02dV\r\n",(int)adc_val,voltage_mV/1000,(voltage_mV%1000)/10);
- 80009fa:	6d39      	ldr	r1, [r7, #80]	@ 0x50
- 80009fc:	f8b7 304e 	ldrh.w	r3, [r7, #78]	@ 0x4e
- 8000a00:	4a16      	ldr	r2, [pc, #88]	@ (8000a5c <main+0x188>)
- 8000a02:	fba2 2303 	umull	r2, r3, r2, r3
- 8000a06:	099b      	lsrs	r3, r3, #6
- 8000a08:	b29b      	uxth	r3, r3
- 8000a0a:	461c      	mov	r4, r3
- 8000a0c:	f8b7 304e 	ldrh.w	r3, [r7, #78]	@ 0x4e
- 8000a10:	4a12      	ldr	r2, [pc, #72]	@ (8000a5c <main+0x188>)
- 8000a12:	fba2 0203 	umull	r0, r2, r2, r3
- 8000a16:	0992      	lsrs	r2, r2, #6
- 8000a18:	f44f 707a 	mov.w	r0, #1000	@ 0x3e8
- 8000a1c:	fb00 f202 	mul.w	r2, r0, r2
- 8000a20:	1a9b      	subs	r3, r3, r2
- 8000a22:	b29b      	uxth	r3, r3
- 8000a24:	4a0f      	ldr	r2, [pc, #60]	@ (8000a64 <main+0x190>)
- 8000a26:	fba2 2303 	umull	r2, r3, r2, r3
- 8000a2a:	08db      	lsrs	r3, r3, #3
- 8000a2c:	b29b      	uxth	r3, r3
- 8000a2e:	1d38      	adds	r0, r7, #4
- 8000a30:	9300      	str	r3, [sp, #0]
- 8000a32:	4623      	mov	r3, r4
- 8000a34:	460a      	mov	r2, r1
- 8000a36:	490d      	ldr	r1, [pc, #52]	@ (8000a6c <main+0x198>)
- 8000a38:	f002 fe6c 	bl	8003714 <siprintf>
+ 80009fc:	6d39      	ldr	r1, [r7, #80]	@ 0x50
+ 80009fe:	f8b7 304e 	ldrh.w	r3, [r7, #78]	@ 0x4e
+ 8000a02:	4a17      	ldr	r2, [pc, #92]	@ (8000a60 <main+0x18c>)
+ 8000a04:	fba2 2303 	umull	r2, r3, r2, r3
+ 8000a08:	099b      	lsrs	r3, r3, #6
+ 8000a0a:	b29b      	uxth	r3, r3
+ 8000a0c:	461c      	mov	r4, r3
+ 8000a0e:	f8b7 304e 	ldrh.w	r3, [r7, #78]	@ 0x4e
+ 8000a12:	4a13      	ldr	r2, [pc, #76]	@ (8000a60 <main+0x18c>)
+ 8000a14:	fba2 0203 	umull	r0, r2, r2, r3
+ 8000a18:	0992      	lsrs	r2, r2, #6
+ 8000a1a:	f44f 707a 	mov.w	r0, #1000	@ 0x3e8
+ 8000a1e:	fb00 f202 	mul.w	r2, r0, r2
+ 8000a22:	1a9b      	subs	r3, r3, r2
+ 8000a24:	b29b      	uxth	r3, r3
+ 8000a26:	4a0f      	ldr	r2, [pc, #60]	@ (8000a64 <main+0x190>)
+ 8000a28:	fba2 2303 	umull	r2, r3, r2, r3
+ 8000a2c:	08db      	lsrs	r3, r3, #3
+ 8000a2e:	b29b      	uxth	r3, r3
+ 8000a30:	1d38      	adds	r0, r7, #4
+ 8000a32:	9300      	str	r3, [sp, #0]
+ 8000a34:	4623      	mov	r3, r4
+ 8000a36:	460a      	mov	r2, r1
+ 8000a38:	490c      	ldr	r1, [pc, #48]	@ (8000a6c <main+0x198>)
+ 8000a3a:	f002 fe6b 	bl	8003714 <siprintf>
       UART_SendString(uart_buf);
- 8000a3c:	1d3b      	adds	r3, r7, #4
- 8000a3e:	4618      	mov	r0, r3
- 8000a40:	f7ff ff34 	bl	80008ac <UART_SendString>
+ 8000a3e:	1d3b      	adds	r3, r7, #4
+ 8000a40:	4618      	mov	r0, r3
+ 8000a42:	f7ff ff33 	bl	80008ac <UART_SendString>
   	  HAL_Delay(500);
- 8000a44:	f44f 70fa 	mov.w	r0, #500	@ 0x1f4
- 8000a48:	f000 fb48 	bl	80010dc <HAL_Delay>
+ 8000a46:	f44f 70fa 	mov.w	r0, #500	@ 0x1f4
+ 8000a4a:	f000 fb47 	bl	80010dc <HAL_Delay>
   {
- 8000a4c:	bf00      	nop
- 8000a4e:	e794      	b.n	800097a <main+0xa6>
- 8000a50:	20000000 	.word	0x20000000
- 8000a54:	40011000 	.word	0x40011000
- 8000a58:	454e4000 	.word	0x454e4000
- 8000a5c:	10624dd3 	.word	0x10624dd3
- 8000a60:	51eb851f 	.word	0x51eb851f
+ 8000a4e:	bf00      	nop
+ 8000a50:	e793      	b.n	800097a <main+0xa6>
+ 8000a52:	bf00      	nop
+ 8000a54:	20000000 	.word	0x20000000
+ 8000a58:	40011000 	.word	0x40011000
+ 8000a5c:	454e4000 	.word	0x454e4000
+ 8000a60:	10624dd3 	.word	0x10624dd3
  8000a64:	cccccccd 	.word	0xcccccccd
  8000a68:	0800409c 	.word	0x0800409c
  8000a6c:	080040ac 	.word	0x080040ac

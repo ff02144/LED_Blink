@@ -342,7 +342,7 @@ int main(void)
   uint16_t voltage_mV =(uint16_t)(adc_val*3300.0f/4096.0f);
   char oled_buf[20];
 
-  sprintf(oled_buf,"L:%4d %d.%02dV",(int)adc_val,voltage_mV/1000,(voltage_mV%100)/10);
+  sprintf(oled_buf,"L:%4d %d.%02dV",(int)adc_val,voltage_mV/1000,(voltage_mV%1000)/10);
 
 
   OLED_Clear();
