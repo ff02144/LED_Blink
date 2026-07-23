@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,6 +45,8 @@ ADC_HandleTypeDef hadc1;
 
 I2C_HandleTypeDef hi2c1;
 
+UART_HandleTypeDef huart1;
+
 /* USER CODE BEGIN PV */
 uint8_t oled_addr=0x3C;
 /* USER CODE END PV */
@@ -53,6 +56,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_ADC1_Init(void);
+static void MX_USART1_UART_Init(void);
 /* USER CODE BEGIN PFP */
 void OLED_Clear(void);
 /* USER CODE END PFP */
@@ -257,6 +261,10 @@ uint32_t ADC_Read(void)
 	    }
 	    return 0;
 }
+void UART_SendString(char *str)
+	    {
+	        HAL_UART_Transmit(&huart1,(uint8_t*)str,strlen(str),100);
+	    }
 /* USER CODE END 0 */
 
 /**
@@ -290,6 +298,7 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   MX_ADC1_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
   if (oled_addr != 0xFF)
   {
@@ -327,34 +336,22 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
-	  while (1)
-	  {
-	      HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);  // LED 亮
-	      uint32_t adc_val = ADC_Read();
-	      HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);    // LED 滅
-
-	      char buf[20];
-	      float voltage = adc_val * 3.3f / 4096.0f;
-	      sprintf(buf, "L:%4d  %.2fV", (int)adc_val, voltage);
-	      OLED_Clear();
-	      OLED_WriteString(buf);
-	      HAL_Delay(500);
-	  }
-
-	  // 讀取 ADC 數值（0~4095）
-	    uint32_t adc_val = ADC_Read();
-
-	    // 將數值轉為字串
-	    char buf[20];
-	    sprintf(buf, "Light: %4d", (int)adc_val);   // 或 %lu + (unsigned long)
-
-	    // 顯示在 OLED（先清屏再寫入）
-	    OLED_Clear();
-	    OLED_WriteString(buf);
-
-	    // 延遲 500ms
-	    HAL_Delay(500);
     /* USER CODE BEGIN 3 */
+
+  uint32_t adc_val=ADC_Read();
+  uint16_t voltage_mV =(uint16_t)(adc_val*3300.0f/4096.0f);
+  char oled_buf[20];
+
+  sprintf(oled_buf,"L:%4d %d.%02dV",(int)adc_val,voltage_mV/1000,(voltage_mV%100)/10);
+
+
+  OLED_Clear();
+  OLED_WriteString(oled_buf);
+
+  char uart_buf[50];
+  sprintf(uart_buf,"Light: %d,Voltage:%d.%02dV\r\n",(int)adc_val,voltage_mV/1000,(voltage_mV%1000)/10);
+      UART_SendString(uart_buf);
+  	  HAL_Delay(500);
   }
   /* USER CODE END 3 */
 }
@@ -483,6 +480,39 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
 
 }
 
