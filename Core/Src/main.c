@@ -63,6 +63,7 @@ void OLED_Clear(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
 void OLED_WriteCmd(uint8_t cmd)
 {
     HAL_I2C_Mem_Write(&hi2c1, oled_addr << 1, 0x00, 1, &cmd, 1, 100);
@@ -116,7 +117,14 @@ void OLED_Clear(void)
         HAL_I2C_Mem_Write(&hi2c1, oled_addr << 1, 0x40, 1, zero, 128, 100);
     }
 }
-
+volatile uint8_t uart_tx_done = 1;
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+	 if (huart->Instance == USART1)
+	    {
+	        uart_tx_done = 1;  // 傳送完成，標記為空閒
+	    }
+}
 
 const uint8_t Font5x7[96][5] = {
     {0x00,0x00,0x00,0x00,0x00}, // 32 空格
@@ -263,7 +271,12 @@ uint32_t ADC_Read(void)
 }
 void UART_SendString(char *str)
 	    {
-	        HAL_UART_Transmit(&huart1,(uint8_t*)str,strlen(str),100);
+	if (uart_tx_done)  // 只有空閒時才送
+	{
+		uart_tx_done=0;
+	    HAL_UART_Transmit_IT(&huart1, (uint8_t*)str, strlen(str));
+
+	}
 	    }
 /* USER CODE END 0 */
 
@@ -351,6 +364,7 @@ int main(void)
   char uart_buf[50];
   sprintf(uart_buf,"Light: %d,Voltage:%d.%02dV\r\n",(int)adc_val,voltage_mV/1000,(voltage_mV%1000)/10);
       UART_SendString(uart_buf);
+
   	  HAL_Delay(500);
   }
   /* USER CODE END 3 */
